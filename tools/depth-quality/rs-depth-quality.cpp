@@ -61,6 +61,14 @@ int main(int argc, const char * argv[]) try
                  "RMS = SQRT((SUM(Di-Dpi)^2)/n)\n"
                  "             i=1    ");
 
+    metric ir_temperature = model.make_metric(
+            "IR Temperature", 30.0f, 60.0f, true, "°C",
+            "IR temperature");
+
+    metric mems_temperature = model.make_metric(
+            "MEMS Temperature", 30.0f, 60.0f, true, "°C",
+            "MEMS temperature");
+
     // ===============================
     //       Metrics Calculation
     // ===============================
@@ -154,6 +162,14 @@ int main(int argc, const char * argv[]) try
         plane_fit_rms_error->add_value(rms_error_val_per);
         if (record) samples.push_back({ plane_fit_rms_error->get_name(),  rms_error_val });
 
+        // temperature
+        auto ir_temperature_val = model.get_ir_temperature();
+        ir_temperature->add_value(ir_temperature_val);
+        if (record) samples.push_back({ ir_temperature->get_name(),  (float)ir_temperature_val });
+
+        auto mems_temperature_val = model.get_mems_temperature();
+        mems_temperature->add_value(mems_temperature_val);
+        if (record) samples.push_back({ mems_temperature->get_name(),  (float)mems_temperature_val });
     });
 
     // ===============================

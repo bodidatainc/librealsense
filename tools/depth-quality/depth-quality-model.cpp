@@ -995,6 +995,28 @@ namespace rs2
             return ss.str();
         }
 
+        int tool_model::get_mems_temperature(void) const {
+            rs2::device dev = this->get_active_device();
+            auto dbg = dev.as<rs2::debug_protocol>();
+            std::vector<uint8_t> cmd = {0x14, 0, 0xab, 0xcd, 0x0a, 0, 0, 0, 0, 0, 0, 0,
+                                        0,    0, 0,    0,    0,    0, 0, 0, 0, 0, 0, 0};
+
+            auto res = dbg.send_and_receive_raw_data(cmd);
+            int temp = res[4];
+            return temp;
+        }
+
+        int tool_model::get_ir_temperature(void) const {
+            rs2::device dev = this->get_active_device();
+            auto dbg = dev.as<rs2::debug_protocol>();
+            std::vector<uint8_t> cmd = {0x14, 0, 0xab, 0xcd, 0x52, 0, 0, 0, 0, 0, 0, 0,
+                                        0,    0, 0,    0,    0,    0, 0, 0, 0, 0, 0, 0};
+
+            auto res = dbg.send_and_receive_raw_data(cmd);
+            int temp = res[4];
+            return temp;
+        }
+
         void metric_plot::render(ux_window& win)
         {
             std::lock_guard<std::mutex> lock(_m);

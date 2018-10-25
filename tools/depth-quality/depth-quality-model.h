@@ -366,6 +366,10 @@ namespace rs2
             float get_depth_scale() const { return _metrics_model._depth_scale_units; }
             rs2::device get_active_device(void) const;
 
+            int get_ir_temperature(void) const;
+
+            int get_mems_temperature(void) const;
+
         private:
 
             std::string capture_description();
